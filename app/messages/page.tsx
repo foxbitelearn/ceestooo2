@@ -1,7 +1,6 @@
-
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { getMessagesForUser } from '@/lib/storage';
+import { prisma } from '@/lib/prisma'; // Use Prisma instead of storage
 import { MessageCard } from '@/components/ui/MessageCard';
 
 export default async function MessagesPage() {
@@ -12,7 +11,11 @@ export default async function MessagesPage() {
         redirect('/login');
     }
 
-    const messages = await getMessagesForUser(username);
+    // FETCH FROM DATABASE INSTEAD OF JSON FILE
+    const messages = await prisma.message.findMany({
+        where: { to: username },
+        orderBy: { timestamp: 'desc' }
+    });
 
     return (
         <div className="min-h-screen bg-paper px-4 py-8">
@@ -50,16 +53,16 @@ export default async function MessagesPage() {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-min">
                         {messages.map((msg, index) => {
-                            // Deterministic variance based on index or content length
                             const variants: ('yellow' | 'blue' | 'pink' | 'green')[] = ['yellow', 'blue', 'pink', 'green'];
-                            const variant = variants[(index + msg.content.length) % variants.length];
-                            const rotation = (index % 2 === 0 ? 1 : -1) * ((index % 5) + 1); // Slight rotation based on index
+                            const variant = variants[(index + (msg.content?.length || 0)) % variants.length];
+                            const rotation = (index % 2 === 0 ? 1 : -1) * ((index % 5) + 1);
 
                             return (
                                 <div key={msg.id} style={{ transform: `rotate(${rotation}deg)` }} className="transition-transform hover:z-10 hover:scale-105 duration-300">
                                     <MessageCard
                                         content={msg.content}
-                                        timestamp={msg.timestamp}
+                                        // Map Prisma DateTime to timestamp number/string if needed for your component
+                                        timestamp={msg.timestamp.getTime()} 
                                         variant={variant}
                                     />
                                 </div>
