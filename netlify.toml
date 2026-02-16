@@ -1,7 +1,13 @@
 [build]
-  base = "ceestoo"
-  publish = ".next"
+  # The directory where your build command runs
+  # If your code is in the root, leave this commented out or remove it
+  # base = "/"
+
+  # The command to compile your site
   command = "npm run build"
 
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
+  # The directory that Netlify will serve (usually 'dist' for Vite or 'build' for Create React App)
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
