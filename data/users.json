@@ -1,27 +1,27 @@
-// app/actions/register.ts
-"use server";
-import { prisma } from "@/lib/prisma";
-
-export async function handleSignUp(formData: FormData) {
-  const name = formData.get("name") as string;
-  const passcode = formData.get("passcode") as string;
-
-  try {
-    // 1. Check if user exists
-    const existingUser = await prisma.user.findUnique({ where: { name } });
-    if (existingUser) return { error: "User already exists" };
-
-    // 2. Create user in the database (No more users.json!)
-    await prisma.user.create({
-      data: {
-        name,
-        passcode, // Note: Hash this in a real production app
-      },
-    });
-
-    return { success: true };
-  } catch (e) {
-    console.error(e);
-    return { error: "Database connection failed" };
+[
+  {
+    "name": "Fathima Z",
+    "passcode": "123"
+  },
+  {
+    "name": "ISHAN",
+    "passcode": "321",
+    "trackingIds": [
+      "1ea9feab-55f9-4eb5-b30b-11a4bea5fbdc"
+    ]
+  },
+  {
+    "name": "DHRUPAD",
+    "passcode": "826",
+    "trackingIds": [
+      "1ea9feab-55f9-4eb5-b30b-11a4bea5fbdc"
+    ]
+  },
+  {
+    "name": "SURYATHEJ",
+    "passcode": "123",
+    "trackingIds": [
+      "1ea9feab-55f9-4eb5-b30b-11a4bea5fbdc"
+    ]
   }
-}
+]
