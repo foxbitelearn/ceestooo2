@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-paper: #fdf6e3;
+  --color-paper-dark: #eee8d5;
+  --color-ink: #5f4b32;
+  --color-ink-light: #837563;
+  --color-gold: #d4a373;
+  --color-gold-light: #faedcd;
+  --color-sage: #ccd5ae;
+  --color-sage-dark: #a3b18a;
+
+  --font-handwritten: var(--font-caveat), cursive;
+  --font-serif: var(--font-lora), serif;
+  --font-sans: var(--font-inter), sans-serif;
+  
+  --animate-float: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Custom Base Styles */
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  background-image: radial-gradient(var(--color-ink-light) 0.5px, transparent 0.5px);
+  background-size: 24px 24px;
+}
+
+/* Paper texture effect via pseudo-element if desired, kept simple for now */

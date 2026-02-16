@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  passcode    String
+  trackingIds String[] @default([]) // Array of strings for device tracking
+  createdAt   DateTime @default(now())
+}
+
+
+model Message {
+  id         String   @id @default(uuid())
+  to         String
+  content    String
+  // Using DateTime is better for DBs. We will map this to number in the API layer.
+  timestamp  DateTime @default(now()) 
+  trackingId String?
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  teacher   String
+  content   String
+  timestamp DateTime @default(now())
+}
